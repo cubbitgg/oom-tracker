@@ -111,20 +111,6 @@ func printNuma(p Process) error {
 	return nil
 }
 
-func SendWarningTo(p Process) error {
-	signal := resolveWarningSignal()
-	return p.Signal(signal)
-}
-
-func resolveWarningSignal() syscall.Signal {
-	envSignal := os.Getenv("WARNING_SIGNAL")
-	if val, ok := supportedSignals[envSignal]; ok {
-		return val
-	}
-
-	return syscall.SIGUSR1
-}
-
 func PrintCriticalFor(p Process) error {
 	pct, error := p.MemoryUsagePercent()
 	if error != nil {
@@ -133,20 +119,6 @@ func PrintCriticalFor(p Process) error {
 	log.Printf("=== Critical memory usage on pid %d's cgroup: %d%% ===", p.Pid(), pct)
 	return printNuma(p)
 
-}
-
-func SendCriticalTo(p Process) error {
-	signal := resolveCriticalSignal()
-	return p.Signal(signal)
-}
-
-func resolveCriticalSignal() syscall.Signal {
-	envSignal := os.Getenv("CRITICAL_SIGNAL")
-	if val, ok := supportedSignals[envSignal]; ok {
-		return val
-	}
-
-	return syscall.SIGUSR2
 }
 
 type OsProcess struct {

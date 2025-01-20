@@ -210,10 +210,8 @@ func (p *ProcessWatcher) signal(now time.Time) error {
 
 	switch p.state {
 	case Warning:
-		//return proc.SendWarningTo(p.process)
 		return proc.PrintWarningFor(p.process)
 	case Critical:
-		//return proc.SendCriticalTo(p.process)
 		return proc.PrintCriticalFor(p.process)
 	default:
 		return nil
